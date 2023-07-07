@@ -124,6 +124,9 @@ brew
 copy_ssh_keys
 zsh
 
+# nodejs stable
+nvm install --lts
+
 echo -e "=====================
 For Raycast, open raycast and type \"Import Settings & Data\" and select the file \"raycast.config\" in the dotfiles directory
 ====================="
