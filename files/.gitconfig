@@ -1,0 +1,13 @@
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[user]
+	name = Seifeldin Sabry
+	email = 93074813+Seifeldin-Sabry@users.noreply.github.com
+[core]
+	autocrlf = input
+
+[init]
+	defaultBranch = main
