@@ -39,11 +39,9 @@ function copy_ssh_keys() {
     fi
   done
   eval "$(ssh-agent -s)"
-
-  touch ~/.ssh/config
-  echo -e "Host *\n AddKeysToAgent yes\n UseKeychain yes\n IdentityFile ~/.ssh/id_ed25519" > ~/.ssh/config
-
   unset IFS
+
+  cat ssh-config.txt > ~/.ssh/config
 }
 
 function xcode() {
