@@ -1,37 +1,14 @@
 #!/bin/bash
 
 function brew(){
-  # Install brew
-  if [ "$OS" == "macos" ]
-  then
-    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  elif [ "$OS" == "linux" ]
-  then
-    sudo apt-get install build-essential procps curl file git -y
-    test -d ~/.linuxbrew && eval "$(~/.linuxbrew/bin/brew shellenv)"
-    test -d /home/linuxbrew/.linuxbrew && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-    test -r ~/.bash_profile && echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bash_profile
-    echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.profile
-  fi
-
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   # Install brew packages
   brew bundle install --file=~/.dotfiles/Brewfile
 }
 
-function check_root() {
-  if [ "$EUID" -ne 0 ]
-  then
-    echo "Please run as root"
-    exit 1
-  fi
-}
-
 function help(){
-  echo "Usage: sudo ./setup.sh <OS>"
-  echo "OS: macos, linux"
+  echo "Usage: sudo ./setup.sh"
   echo "for mac only works with m1 chip"
-  echo "for linux only works with ubuntu"
-  echo "requires root access"
 }
 
 function copy_dot_files() {
@@ -84,20 +61,6 @@ function copy_ssh_keys() {
   unset IFS
 }
 
-function check_os(){
-  OS=$1
-  # check if parameter is passed
-  if [ -z "$OS" ]; then
-    echo "No OS specified. Exiting."
-    help
-    exit 1
-  elif [ "$OS" != "macos" ] && [ "$OS" != "linux" ]; then
-      echo "OS not supported. Exiting."
-      help
-      exit 1
-  fi
-}
-
 function xcode() {
   echo "=====================
   Installing xcode...
@@ -111,13 +74,9 @@ function xcode() {
 }
 
 check_help "$1"
-check_root
-check_os "$1"
-
 echo "=====================
 Installing dotfiles for $OS...
 ====================="
-
 xcode
 copy_dot_files
 brew
