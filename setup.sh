@@ -6,35 +6,20 @@ function brew(){
   brew bundle install --file=~/.dotfiles/Brewfile
 }
 
-function help(){
-  echo "Usage: sudo ./setup.sh"
-  echo "for mac only works with m1 chip"
-}
 
 function copy_dot_files() {
   echo "=====================
   Copying dotfiles...
   ====================="
-  ln -s ~/.dotfiles/.bash_profile ~/.bash_profile
-  ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
-  ln -s ~/.dotfiles/.iterm2_shell_integration.zsh ~/.iterm2_shell_integration.zsh
-}
-
-function zsh() {
-  echo "=====================
-  Installing zsh...
-  ====================="
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-  mv ~/.zshrc ~/.zshrc.bak
-  ln -s ~/.dotfiles/.zshrc ~/.zshrc
-}
-
-function check_help() {
-  if [ "$1" == "-h" ] || [ "$1" == "--help" ]
-  then
-    help
-    exit 0
-  fi
+  IFS='
+  '
+  for file in $(ls -a ~/.dotfiles/files); do
+    if [ "$file" != "." ] && [ "$file" != ".." ] && [ "$file" != ".ssh" ]
+    then
+      ln -s ~/.dotfiles/files/"$file" ~/"$file"
+    fi
+  done
+  unset IFS
 }
 
 function copy_ssh_keys() {
@@ -65,15 +50,21 @@ function xcode() {
   echo "=====================
   Installing xcode...
   ====================="
-  if [ "$OS" == "macos" ]
-  then
-    xcode-select --install
-  else
-    echo "Skipping xcode install for linux...."
-  fi
+  xcode-select --install
 }
 
-check_help "$1"
+function zsh(){
+  echo "=====================
+  Installing zsh...
+  ====================="
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  echo "=====================
+  Downloading antigen...
+  ====================="
+  curl -L git.io/antigen > ~/antigen.zsh
+}
+
 echo "=====================
 Installing dotfiles for $OS...
 ====================="
@@ -83,10 +74,14 @@ brew
 copy_ssh_keys
 zsh
 
+echo "=====================
+Installing node stable...
+====================="
 # nodejs stable
 nvm install --lts
 
 echo -e "=====================
 For Raycast, open raycast and type \"Import Settings & Data\" and select the file \"raycast.config\" in the dotfiles directory
+Make sure to also restart your terminal for the changes to take effect
 ====================="
 
