@@ -80,6 +80,10 @@ nvm install --lts
 
 echo -e "=====================
 For Raycast, open raycast and type \"Import Settings & Data\" and select the file \"raycast.config\" in the dotfiles directory
-Make sure to also restart your terminal for the changes to take effect
+Make sure to also restart your terminal for the changes to take effect.
+
+Don't forget Docker Desktop!
+
+For Intellij, Select File > Manage IDE Settings > Import Settings and select the file \"intellij.zip\" in the dotfiles directory
 ====================="
 
