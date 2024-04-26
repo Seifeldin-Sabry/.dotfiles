@@ -43,3 +43,4 @@ Temporary Items
 
 .idea
 /logs/
+**/known_hosts**
