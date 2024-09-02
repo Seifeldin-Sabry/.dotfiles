@@ -4,7 +4,10 @@ function brew(){
   echo "=====================
   Setting up brew...
   ====================="
-  yes "" | NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  if ! command -v brew >/dev/null 2>&1; then
+   echo "please install brew first"
+   exit 1
+  fi
   # Install brew packages
   brew bundle install --file=~/.dotfiles/Brewfile
 }
